@@ -21,7 +21,7 @@ public class MenuController {
     private final MenuRepository menuRepository;
 
     @GetMapping("/menus")
-    public Iterable<MenuItem> getMenu() {
+    public List<MenuItem> getMenu() {
         return menuRepository.findAll();
     }
 

@@ -31,7 +31,8 @@ public class Order {
     private User user;
 
    // private List<OrderItem> orderItems = new ArrayList<>();
-    //private OrderStatus status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
     private double totalPrice;
 
     private LocalDateTime createdAt=LocalDateTime.now();

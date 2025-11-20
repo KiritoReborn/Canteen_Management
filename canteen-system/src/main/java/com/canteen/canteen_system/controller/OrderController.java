@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Scanner;
 @RestController
 public class OrderController {
-//    public List<OrderItem> getAllitems(){
-//
-//    }
+   //public List<OrderItem> getAllitems(){}
 }
 

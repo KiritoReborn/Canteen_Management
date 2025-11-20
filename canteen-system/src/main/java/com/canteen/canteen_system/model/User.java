@@ -5,18 +5,12 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.*;
 
-enum Role {
-    STUDENT,
-    STAFF
-}
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="users")
-@Data
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +18,9 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String role;
-    private LocalDateTime createdAt;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
