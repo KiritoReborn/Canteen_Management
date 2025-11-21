@@ -16,6 +16,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+
     public User registerUser(User user) {
         if (userRepository.findByEmail(user.getEmail()) != null) {
             throw new RuntimeException("Email already in use");
@@ -25,7 +26,7 @@ public class UserService {
 
     public User loginUser(LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail());
-        if (user!=null&&user.getPassword().equals(loginDto.getPassword())) {
+        if (user != null && user.getPassword().equals(loginDto.getPassword())) {
             return user;
         }
         return null;
@@ -44,7 +45,16 @@ public class UserService {
     }
 
     public User getUserByRole(String role) {
-        com.canteen.canteen_system.model.Role roleEnum = com.canteen.canteen_system.model.Role.valueOf(role.toUpperCase());
+        com.canteen.canteen_system.model.Role roleEnum = com.canteen.canteen_system.model.Role
+                .valueOf(role.toUpperCase());
         return userRepository.findByRole(roleEnum);
+    }
+
+    public User getUserByName(String username) {
+        return userRepository.findByName(username);
+    }
+
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
     }
 }

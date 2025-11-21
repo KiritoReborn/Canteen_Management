@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 public class UserDto {
     private Long id;
-    private String Name;
+    private String name;
     private String email;
     private String role;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

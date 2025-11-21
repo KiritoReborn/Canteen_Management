@@ -4,14 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.canteen.canteen_system.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
 
-enum OrderStatus {
-    PENDING,
-    COMPLETED,
-    CANCELLED
-}
+
 
 @Getter 
 @Setter
@@ -30,15 +27,12 @@ public class Order {
     @JoinColumn(name="user_id")
     private User user;
 
-   // private List<OrderItem> orderItems = new ArrayList<>();
+    //private List<OrderItem> orderItems=new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
     private double totalPrice;
 
     private LocalDateTime createdAt=LocalDateTime.now();
 
-//    public void addOrderItem(OrderItem item) {
-//        orderItems.add(item);
-//        item.setOrder(this);
-//    }
 }
