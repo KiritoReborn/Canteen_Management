@@ -99,7 +99,7 @@ public class UserController {
             if (user.getEmail().equals(deletedUser.getEmail())
                     && deletedUser.getPassword().equals(user.getPassword())) {
                 userRepository.delete(user);
-        return ResponseEntity.noContent().build();
+                return ResponseEntity.noContent().build();
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }

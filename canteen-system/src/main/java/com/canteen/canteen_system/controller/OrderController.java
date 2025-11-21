@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Scanner;
+
 @RestController
 @AllArgsConstructor
 public class OrderController {
@@ -18,10 +19,8 @@ public class OrderController {
     private final UserRepository userRepository;
 
     @GetMapping("/orders")
-    public List<Order> getOrders(){
+    public List<Order> getOrders() {
         return orderRepository.findAll();
     }
 
-
 }
-

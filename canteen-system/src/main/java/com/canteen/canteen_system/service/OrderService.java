@@ -5,7 +5,9 @@ import com.canteen.canteen_system.repository.OrderRepository;
 import com.canteen.canteen_system.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.stereotype.Service;
 
+@Service
 @AllArgsConstructor
 @Data
 public class OrderService {
@@ -18,7 +20,6 @@ public class OrderService {
 
     public Order PlaceOrder(Order order){
         return orderRepository.save(order);
-    }
-
+}
 
 }
