@@ -1,12 +1,11 @@
 # 🍽️ College Canteen Management System
 
-A complete **Spring Boot** backend system for managing college canteen orders with JWT authentication, real-time notifications, token-based order pickup, and comprehensive role-based access control.
+A complete **Spring Boot** backend system for managing college canteen orders with JWT authentication, email notifications, token-based order pickup, and comprehensive role-based access control.
+
 
 [![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![MySQL](https://img.shields.io/badge/MySQL-8.x-blue.svg)](https://www.mysql.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
 ---
 
 ## 📋 Table of Contents
@@ -18,10 +17,20 @@ A complete **Spring Boot** backend system for managing college canteen orders wi
 - [API Documentation](#-api-documentation)
 - [Security](#-security)
 - [Database Schema](#-database-schema)
-- [Real-Time Features](#-real-time-features)
 - [Testing](#-testing)
 - [Project Structure](#-project-structure)
-- [Contributing](#-contributing)
+
+---
+
+
+## 👨‍💻 Team Members and Work Distribution  
+
+**Raghu (BT2024029)**: User management module and multi-threading aspects.
+**Hasini (BT2024113)**: Menu management and email functionality.
+**Brinda (IMT2024013)**: Menu module and support for email features.
+**Haneesh (BT2024126)**: Analytics module and exception handling.
+**Godha (BT2024082)**: Security implementation using JWT and role-based access control.
+**Rutwik (BT2024091)**: Order management including order lifecycle, token system, and FCFS logic.
 
 ---
 
@@ -31,7 +40,7 @@ A complete **Spring Boot** backend system for managing college canteen orders wi
 - 🔐 **JWT-based Authentication** - Secure login/register with token-based sessions
 - 👥 **Role-Based Access Control (RBAC)** - Student and Staff roles with granular permissions
 - 🎫 **Token System** - Automatic token generation for order pickup
-- 📱 **Real-Time Updates** - WebSocket notifications for order status changes
+- 📱 **Order Status Updates** - Email notifications for order status changes
 - 📧 **Email Notifications** - Automated emails on order status updates
 - 📊 **Analytics Dashboard** - Comprehensive system statistics
 - 🔄 **Pagination Support** - Efficient data retrieval for large datasets
@@ -48,11 +57,10 @@ A complete **Spring Boot** backend system for managing college canteen orders wi
 - First-Come-First-Serve (FCFS) order processing
 - Multi-item order support
 - Order cancellation with status validation
-- **Asynchronous notifications** (Email + WebSocket)
+- **Asynchronous notifications** (Email)
 - **Parallel analytics** query execution
 - **Batch order processing** with CompletableFuture
 - **4 dedicated thread pools** for different tasks
-
 ---
 
 ## 🛠️ Technology Stack
@@ -64,7 +72,6 @@ A complete **Spring Boot** backend system for managing college canteen orders wi
 - **Database:** MySQL 8.x (Cloud-hosted on Aiven)
 - **ORM:** JPA/Hibernate
 - **Build Tool:** Maven
-- **Real-Time:** WebSocket (STOMP)
 - **Email:** Spring Mail (SMTP)
 
 ### **Libraries & Tools**
@@ -112,10 +119,6 @@ A complete **Spring Boot** backend system for managing college canteen orders wi
 5. **DTO Layer** - Data transfer objects with MapStruct
 6. **Model Layer** - JPA entities
 7. **Threading Layer** - Async execution with dedicated thread pools
-3. **Repository Layer** - Data access using Spring Data JPA
-4. **Security Layer** - JWT authentication, authorization checks
-5. **DTO Layer** - Data transfer objects with MapStruct
-6. **Model Layer** - JPA entities
 
 ---
 
@@ -402,61 +405,29 @@ picked_up_at TIMESTAMP
 
 ---
 
-## 📡 Real-Time Features
-
-### **WebSocket Configuration**
-Connect to: `ws://localhost:8080/ws`
-
-### **Subscribe to Topics**
-```javascript
-// All orders
-/topic/orders
-
-// Specific order status
-/topic/order-status/{orderId}
-```
-
-### **Example Client Code**
-```javascript
-const socket = new SockJS('http://localhost:8080/ws');
-const stompClient = Stomp.over(socket);
-
-stompClient.connect({}, function() {
-    stompClient.subscribe('/topic/order-status/1', function(message) {
-        console.log('Order status:', message.body);
-        // Update UI with new status
-    });
-});
-```
-
----
-
 ## ⚡ Performance & Threading
 
 ### **Thread Pool Configuration**
-The system uses **4 dedicated thread pools** for optimal performance:
+The system uses **4 dedicated thread pools** to ensure high performance and isolate different tasks:
 
-| Thread Pool | Core Size | Max Size | Queue | Purpose |
-|-------------|-----------|----------|-------|---------|
-| `taskExecutor` | 5 | 10 | 100 | General async tasks |
-| `emailExecutor` | 3 | 5 | 50 | Email notifications |
-| `analyticsExecutor` | 2 | 4 | 25 | Analytics queries |
-| `notificationExecutor` | 3 | 6 | 50 | WebSocket + notifications |
+| Thread Pool | Core | Max | Queue | Purpose |
+|-------------|------|-----|-------|---------|
+| `taskExecutor` | 5 | 10 | 100 | General asynchronous tasks |
+| `emailExecutor` | 3 | 5 | 50 | Handling SMTP email transmission |
+| `analyticsExecutor` | 2 | 4 | 25 | Parallel processing for analytics queries |
+| `notificationExecutor` | 3 | 6 | 50 | Processing order status alerts (Email logic) |
 
 ### **Performance Improvements**
-- ⚡ **70% faster** order creation (async notifications)
-- ⚡ **78% faster** status updates (non-blocking)
-- ⚡ **83% faster** analytics (7 parallel queries)
+- ⚡ **Improved performance** using asynchronous processing
 - 🔄 **Batch processing** support for multiple orders
 - 📧 **Non-blocking** email notifications
-- 📱 **Asynchronous** WebSocket broadcasts
 
 ### **Key Threading Features**
 - `@Async` methods for non-blocking operations
 - `CompletableFuture` for parallel processing
 - Parallel analytics query execution
 - Batch order creation and updates
-- Thread-safe notification system
+- Thread-safe email notification handling 
 
 See [Threading Guide](THREADING_GUIDE.md) for detailed implementation.
 
@@ -475,10 +446,9 @@ See [Threading Guide](THREADING_GUIDE.md) for detailed implementation.
 3. **Create menu items** (as staff)
 4. **Create orders** (as student)
 5. **Update order status** (as staff)
-6. **Check WebSocket notifications**
-7. **Verify email notifications**
-8. **Test pickup with token**
-9. **Monitor thread execution** in logs
+6. **Verify email notifications**
+7. **Test pickup with token**
+8. **Monitor thread execution** in logs
 
 ### **Performance Testing**
 ```bash
@@ -506,7 +476,7 @@ canteen-system/
 ├── src/
 │   ├── main/
 │   │   ├── java/com/canteen/canteen_system/
-│   │   │   ├── config/           # WebSocket & Async config
+│   │   │   ├── config/           # Async and application configuration
 │   │   │   ├── controller/       # REST controllers
 │   │   │   ├── dto/              # Data Transfer Objects
 │   │   │   ├── exception/        # Custom exceptions
@@ -519,10 +489,6 @@ canteen-system/
 │   │       └── application.properties
 │   └── test/                     # Unit tests
 ├── postman/                      # Postman collections
-├── docs/                         # Documentation
-│   ├── THREADING_GUIDE.md        # Threading implementation
-│   ├── FEATURES_IMPLEMENTATION.md
-│   └── ROLE_ACCESS_CONTROL.md
 ├── pom.xml
 └── README.md
 ```
@@ -562,62 +528,6 @@ PENDING ──> PREPARING ──> READY ──> COMPLETED
 }
 ```
 
----
-
-## 🔧 Configuration
-
-### **Application Properties**
-```properties
-# Server
-server.port=8080
-
-# Database
-spring.datasource.url=jdbc:mysql://host:port/canteen_db
-spring.datasource.username=username
-spring.datasource.password=password
-
-# JPA
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-
-# JWT
-jwt.secret=your-secret-key
-jwt.expiration=86400000
-
-# Email
-spring.mail.host=smtp.gmail.com
-spring.mail.port=587
-spring.mail.username=your-email@gmail.com
-spring.mail.password=your-app-password
-
-# WebSocket
-spring.websocket.allowed-origins=*
-```
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📝 Documentation
-
-- [Software Requirements Specification (SRS)](SRS.md)
-- [Features Implementation Guide](FEATURES_IMPLEMENTATION.md)
-- [Role-Based Access Control](ROLE_ACCESS_CONTROL.md)
-- [Postman Testing Guide](POSTMAN_GUIDE.md)
-- [Threading & Async Implementation](THREADING_GUIDE.md) ⭐ NEW
-- [Complete API Testing Guide](API_TESTING_GUIDE.md) ⭐ NEW - Test Every Feature!
-
----
 
 ## 🎓 Use Cases
 
@@ -625,7 +535,7 @@ Perfect for:
 - College projects
 - Learning Spring Boot
 - Understanding JWT authentication
-- Real-time application development
+- Backend application development
 - Role-based access control implementation
 - RESTful API design
 
@@ -636,7 +546,6 @@ Perfect for:
 - [x] JWT Authentication
 - [x] Role-Based Access Control
 - [x] Token System
-- [x] WebSocket Notifications
 - [x] Email Notifications
 - [x] Analytics Dashboard
 - [x] Pagination Support
@@ -648,40 +557,6 @@ Perfect for:
 - [ ] Mobile Application
 - [ ] Push Notifications
 - [ ] Inventory Management
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 👨‍💻 Author
-
-**Raghu**
-- GitHub: [@KiritoReborn](https://github.com/KiritoReborn)
-
----
-
-## 🙏 Acknowledgments
-
-- Spring Boot Team for the amazing framework
-- MapStruct for simplified DTO mapping
-- JWT.io for token implementation guidance
-- College project requirements and guidance
-
----
-
-## 📞 Support
-
-For issues and questions:
-- Open an issue on GitHub
-- Contact: [Your Email]
-
----
-
-**⭐ If you find this project helpful, please give it a star!**
 
 ---
 
@@ -703,8 +578,3 @@ cd javac/canteen-system
 # Test
 curl http://localhost:8080/api/menu/
 ```
-
-**Status:** ✅ Production Ready  
-**Build:** ✅ Passing  
-**Coverage:** 80%+  
-**Version:** 1.0.0
