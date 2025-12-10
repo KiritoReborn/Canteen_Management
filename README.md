@@ -25,12 +25,12 @@ A complete **Spring Boot** backend system for managing college canteen orders wi
 
 ## 👨‍💻 Team Members and Work Distribution  
 
-**Raghu (BT2024029)**: User management module and multi-threading aspects.
-**Hasini (BT2024113)**: Menu management and email functionality.
-**Brinda (IMT2024013)**: Menu module and support for email features.
-**Haneesh (BT2024126)**: Analytics module and exception handling.
-**Godha (BT2024082)**: Security implementation using JWT and role-based access control.
-**Rutwik (BT2024091)**: Order management including order lifecycle, token system, and FCFS logic.
+- **Raghu (BT2024029)**: User management module and multi-threading aspects.
+- **Hasini (BT2024113)**: Menu management and email functionality.
+- **Brinda (IMT2024013)**: Menu module and support for email features.
+- **Haneesh (BT2024126)**: Analytics module and exception handling.
+- **Godha (BT2024082)**: Security implementation using JWT and role-based access control.
+- **Rutwik (BT2024091)**: Order management including order lifecycle, token system, and FCFS logic.
 
 ---
 
