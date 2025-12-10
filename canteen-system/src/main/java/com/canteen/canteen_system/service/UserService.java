@@ -47,7 +47,7 @@ public class UserService {
 
     public List<User> getUsersByRole(String role) {
         com.canteen.canteen_system.model.Role roleEnum = com.canteen.canteen_system.model.Role
-                .valueOf(role.toUpperCase());
+                .valueOf(role);
         // Return all users with this role (fix: was returning single user)
         return userRepository.findAll().stream()
                 .filter(user -> user.getRole() == roleEnum)
